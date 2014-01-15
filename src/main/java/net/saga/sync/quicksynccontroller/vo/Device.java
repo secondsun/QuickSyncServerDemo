@@ -14,7 +14,7 @@ public class Device {
     public static String TYPE = "DEVICE";
     
     public String deviceName;
-    public String instrument = "nes-12";
+    public String instrument = "nes-00";
     public Score score = new Score();
     public String _id;
 }

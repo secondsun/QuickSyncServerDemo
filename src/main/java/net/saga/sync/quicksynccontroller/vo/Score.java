@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author summers
  */
-class Score {
+public class Score {
 
     static final String type = "SCORE";
     
@@ -23,6 +23,10 @@ class Score {
     
     Score() {
         this.notes = new HashMap<>();
+    }
+    
+    public String note(Integer position) {
+        return notes.getOrDefault(position, "");
     }
     
 }

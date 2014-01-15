@@ -6,6 +6,10 @@
 
 package net.saga.sync.quicksynccontroller.ui;
 
+import java.awt.Frame;
+import javax.swing.JDialog;
+import net.saga.sync.quicksynccontroller.repository.DeviceRepository;
+import net.saga.sync.quicksynccontroller.repository.StartupFactory;
 import net.saga.sync.quicksynccontroller.vo.Device;
 
 /**
@@ -13,6 +17,7 @@ import net.saga.sync.quicksynccontroller.vo.Device;
  * @author summers
  */
 public class DeviceEntry extends javax.swing.JPanel {
+    private Device device;
 
     /**
      * Creates new form DeviceEntry
@@ -23,6 +28,7 @@ public class DeviceEntry extends javax.swing.JPanel {
 
     public DeviceEntry(Device device) {
         initComponents();
+        this.device = device;
         this.deviceName.setText(device.deviceName);
     }
     
@@ -45,6 +51,11 @@ public class DeviceEntry extends javax.swing.JPanel {
         deviceName.setText("deviceName");
 
         scoreButton.setText("Edit Score");
+        scoreButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scoreButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -66,6 +77,15 @@ public class DeviceEntry extends javax.swing.JPanel {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void scoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scoreButtonActionPerformed
+        final JDialog dialog = new JDialog((Frame)null, "Edit Score", false);
+        EditScore editScore = new EditScore(device, dialog, new DeviceRepository(StartupFactory.getDb()));
+        dialog.setContentPane(editScore);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.pack();
+        dialog.setVisible(true);
+    }//GEN-LAST:event_scoreButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
