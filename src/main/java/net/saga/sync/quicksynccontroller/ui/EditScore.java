@@ -25,18 +25,20 @@ public class EditScore extends javax.swing.JPanel {
     private final ScoreRepository repo = new ScoreRepository();
     private final JDialog dialog;
     private final DeviceRepository deviceRepo;
+    private String deviceId;
 
     /**
      * Creates new form EditScore
      */
     public EditScore() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public EditScore(Device device, JDialog dialog, DeviceRepository deviceRepo) {
+    public EditScore(Device device, JDialog dialog, DeviceRepository deviceRepo, String deviceId) {
         this.device = device;
         this.dialog = dialog;
         this.deviceRepo = deviceRepo;
+        this.deviceId = deviceId;
         initComponents();
         initData();
     }
@@ -202,7 +204,7 @@ public class EditScore extends javax.swing.JPanel {
         device.score.notes.put(6, note7.getValue().toString());
         device.score.notes.put(7, note8.getValue().toString());
         
-        deviceRepo.save(device);
+        deviceRepo.update(device, deviceId);
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING)); 
 
     }//GEN-LAST:event_saveButtonActionPerformed

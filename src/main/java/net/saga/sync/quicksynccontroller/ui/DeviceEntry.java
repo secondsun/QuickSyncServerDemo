@@ -18,6 +18,7 @@ import net.saga.sync.quicksynccontroller.vo.Device;
  */
 public class DeviceEntry extends javax.swing.JPanel {
     private Device device;
+    private String deviceId;
 
     /**
      * Creates new form DeviceEntry
@@ -26,10 +27,11 @@ public class DeviceEntry extends javax.swing.JPanel {
         initComponents();
     }
 
-    public DeviceEntry(Device device) {
+    public DeviceEntry(Device device, String deviceId) {
         initComponents();
         this.device = device;
         this.deviceName.setText(device.deviceName);
+        this.deviceId = deviceId;
     }
     
     /**
@@ -80,7 +82,7 @@ public class DeviceEntry extends javax.swing.JPanel {
 
     private void scoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scoreButtonActionPerformed
         final JDialog dialog = new JDialog((Frame)null, "Edit Score", false);
-        EditScore editScore = new EditScore(device, dialog, new DeviceRepository(StartupFactory.getDb()));
+        EditScore editScore = new EditScore(device, dialog, new DeviceRepository(StartupFactory.getDb()), deviceId);
         dialog.setContentPane(editScore);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.pack();

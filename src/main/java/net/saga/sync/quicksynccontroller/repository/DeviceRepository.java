@@ -7,6 +7,7 @@
 package net.saga.sync.quicksynccontroller.repository;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,8 +42,10 @@ public class DeviceRepository extends CouchDbRepositorySupport<Device> {
         List<Device> result = new ArrayList<>(r.getSize());
         for (ViewResult.Row row : r.getRows()) {
             JsonFactory factory = new JsonFactory();
-            
-            result.add(JsonMapper.fromJson(row.getKeyAsNode().get("content").asText(), Device.class));
+            JsonNode keyNode = row.getKeyAsNode();
+            Device device = JsonMapper.fromJson(keyNode.get("content").asText(), Device.class);
+            device._id = keyNode.get("_id").asText();
+            result.add(device);
         }
         
         return result;
@@ -59,7 +62,7 @@ public class DeviceRepository extends CouchDbRepositorySupport<Device> {
         SyncManager manager = getSyncManager();
         try {
             Document doc = manager.read(id);
-            doc = new DefaultDocument(doc.id(), doc.revision(), JsonMapper.toJson(currentDevice), doc.type());
+            doc = new DefaultDocument(doc.id(), doc.revision(), JsonMapper.toJson(currentDevice), Device.TYPE);
             doc = manager.update(doc);
             return JsonMapper.fromJson(doc.content(), Device.class);
         } catch (DocumentNotFoundException ex) {

@@ -22,6 +22,11 @@ import net.saga.sync.quicksynccontroller.vo.Device;
  * @author summers
  */
 public class Main extends javax.swing.JFrame {
+    private static Main _instance;
+
+    static Main getInstance() {
+        return _instance;
+    }
 
     private final DeviceRepository deviceRepo = new DeviceRepository(StartupFactory.getDb());
     private List<Device> devices = deviceRepo.getDevices();
@@ -94,19 +99,6 @@ public class Main extends javax.swing.JFrame {
 
     public void createNewDevice(Device device) {
         deviceRepo.save(device);
-        devices = deviceRepo.getDevices();
-        JPanel panel = new JPanel();
-        panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
-        Device[] listData = devices.toArray(new Device[]{});
-            
-        for (Device deviceItem : listData) {
-            panel.add(new DeviceEntry(deviceItem));
-        }
-        
-        jScrollPane2.setViewportView(panel);
-        jScrollPane2.revalidate();
-        jScrollPane2.repaint();
-
     }
     
     /**
@@ -139,11 +131,11 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             Main main = new Main();
-            
+            _instance = main;
             Device[] listData = main.devices.toArray(new Device[]{});
             
             for (Device device : listData) {
-                main.deviceList.add(new DeviceEntry(device));
+                main.deviceList.add(new DeviceEntry(device, device._id));
             }
             
             main.setVisible(true);
@@ -155,4 +147,19 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel deviceList;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
+
+    public void updateDevices() {
+        devices = deviceRepo.getDevices();
+        JPanel panel = new JPanel();
+        panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
+        Device[] listData = devices.toArray(new Device[]{});
+            
+        for (Device deviceItem : listData) {
+            panel.add(new DeviceEntry(deviceItem, deviceItem._id));
+        }
+        
+        jScrollPane2.setViewportView(panel);
+        jScrollPane2.revalidate();
+        jScrollPane2.repaint();
+    }
 }

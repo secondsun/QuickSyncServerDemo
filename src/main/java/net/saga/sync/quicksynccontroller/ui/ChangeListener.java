@@ -18,6 +18,8 @@ import org.jboss.aerogear.sync.SyncEventHandler;
 public class ChangeListener implements SyncEventHandler{
     private static final String TAG = ChangeListener.class.getSimpleName();
 
+    
+    
     @Override
     public void onClose() {
         Logger.getLogger(TAG).log(Level.INFO, "Closed");
@@ -27,6 +29,7 @@ public class ChangeListener implements SyncEventHandler{
     public void onChange(DocumentChange result) {
         Logger.getLogger(TAG).log(Level.INFO, "Changed");
         Logger.getLogger(TAG).log(Level.INFO, result.getDoc());
+        Main.getInstance().updateDevices();
     }
     
 }
